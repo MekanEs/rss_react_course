@@ -1,69 +1,160 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+button,
+input {
+  font-size: inherit;
+  padding: 5px;
+  border-radius: 12px;
+}
+* {
+  box-sizing: border-box;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+.app {
+  font-family: Mulish, sans-serif;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  flex-direction: column;
+  align-items: center;
+
   min-height: 100vh;
+  background: linear-gradient(180deg, #241d1d 0%, #213038 100%);
+  background-size: 600% 600%;
+
+  -webkit-animation: AnimationName 5s ease infinite;
+  -moz-animation: AnimationName 5s ease infinite;
+  animation: AnimationName 5s ease infinite;
+  transition: all 0.3s ease;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+}
+@keyframes AnimationName {
+  0% {
+    background-position: 51% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 51% 0%;
+  }
 }
 
+.main-section {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.item {
+  padding: 16px 20px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+
+  position: relative;
+}
+
+.bg-blur {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  transition: all 0.3s ease;
+}
+
+.header_container {
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
+
+h2 {
+  font-size: 38px;
+  margin: 12px auto;
+  width: fit-content;
+  color: rgb(17, 36, 52);
+  font-weight: 700;
+  z-index: 1;
+}
+
+.contenBlock {
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  font-size: 30px;
+  width: 90%;
+  z-index: 1;
+  gap: 10px;
+  align-items: center;
+}
+
+.poster {
+  width: 40%;
+  transition: all 0.3s ease;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+  height: fit-content;
+}
+
+.poster:hover {
+  transform: translateY(-2px);
+  -webkit-box-shadow: 8px 8px 15px 0px rgba(0, 0, 0, 0.45);
+  -moz-box-shadow: 8px 8px 15px 0px rgba(0, 0, 0, 0.45);
+  box-shadow: 8px 8px 15px 0px rgba(0, 0, 0, 0.45);
+  border-radius: 10px;
+}
+
+.description {
+  width: 50%;
+}
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-size: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@media (max-width: 1100px) {
+  .contenBlock {
+    flex-direction: column;
+    align-items: center;
   }
-  a:hover {
-    color: #747bff;
+  .poster {
+    max-width: 60%;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .description {
+    width: 100%;
   }
 }
