@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import Header from './components/header/header';
 import { getItems, responsetype } from './API/getItems/getItems';
 import ItemList from './components/itemList/itemList';
+import Loader from './components/loader/loader';
 
 export const SEARCH_VALUE_KEY = 'search_value';
 export type SetSearchQuerytype = (e: ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +21,8 @@ type AppStatetype = {
   page: number;
   pages: number | null;
   total: number | null;
+  background: string;
+  hasError: boolean;
 };
 
 class App extends React.Component<object, AppStatetype> {
@@ -33,14 +36,19 @@ class App extends React.Component<object, AppStatetype> {
       page: 1,
       pages: null,
       total: null,
+      background: 'linear-gradient(180deg, #241d1d 0%, #213038 100%)',
+      hasError: false,
     };
-
+    this.setBackground = this.setBackground.bind(this);
     this.setSearchQuery = this.setSearchQuery.bind(this);
     this.setIsPending = this.setIsPending.bind(this);
     this.setItems = this.setItems.bind(this);
     this.search = this.search.bind(this);
   }
-
+  setBackground: (url: string) => void = (url) => {
+    this.setState({ ...this.state, background: `url(${url})` });
+    console.log(this.state.background);
+  };
   setIsPending: (value: boolean) => void = (value) => {
     this.setState({
       ...this.state,
@@ -70,9 +78,8 @@ class App extends React.Component<object, AppStatetype> {
     );
     this.setItems(response.docs);
   };
-  errorFunc: () => void = async () => {
-    const response = await getItems(this.state.searchValue, this.state.page);
-    this.setItems(response.docs);
+  errorFunc: () => void = () => {
+    this.setState({ ...this.state, hasError: true });
   };
 
   componentDidMount(): void {
@@ -80,16 +87,27 @@ class App extends React.Component<object, AppStatetype> {
   }
 
   render() {
+    if (this.state.hasError) {
+      throw new Error('Something is wrong');
+    }
     return (
-      <div className="app">
+      <div className="app" style={{ background: `${this.state.background}` }}>
         <Header
           searchQuery={this.state.searchValue}
           setSearchQuery={this.setSearchQuery}
           search={this.search}
           error={this.errorFunc}
         />
-
-        <ItemList items={this.state.itemsArr} />
+        <section className="main-section">
+          {this.state.isPending ? (
+            <Loader />
+          ) : (
+            <ItemList
+              items={this.state.itemsArr}
+              setBackground={this.setBackground}
+            />
+          )}
+        </section>
       </div>
     );
   }

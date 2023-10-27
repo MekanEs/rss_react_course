@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
 
+body {
+  margin: 0;
+}
 button,
 input {
   font-size: inherit;
@@ -15,49 +18,9 @@ input {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   min-height: 100vh;
   background: linear-gradient(180deg, #241d1d 0%, #213038 100%);
-  background-size: 600% 600%;
-
-  -webkit-animation: AnimationName 5s ease infinite;
-  -moz-animation: AnimationName 5s ease infinite;
-  animation: AnimationName 5s ease infinite;
   transition: all 0.3s ease;
-}
-
-@-webkit-keyframes AnimationName {
-  0% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 50% 0%;
-  }
-}
-@-moz-keyframes AnimationName {
-  0% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 50% 0%;
-  }
-}
-@keyframes AnimationName {
-  0% {
-    background-position: 51% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 51% 0%;
-  }
 }
 
 .main-section {
@@ -66,10 +29,12 @@ input {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin: 20px 0;
+  width: 100%;
 }
 
 .item {
-  padding: 16px 20px;
+  /* padding: 16px 20px; */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -98,6 +63,7 @@ input {
   display: flex;
   justify-content: space-between;
   font-size: 18px;
+  flex-wrap: wrap;
 }
 
 h2 {
@@ -140,6 +106,7 @@ h2 {
 
 .description {
   width: 50%;
+  word-wrap: break-word;
 }
 button {
   font-size: inherit;
@@ -156,5 +123,52 @@ button {
 
   .description {
     width: 100%;
+    font-size: smaller;
+  }
+}
+
+.loader {
+  margin: 200px auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+}
+.loader::before,
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  animation: prixClipFix 2s linear infinite;
+}
+.loader::after {
+  inset: 8px;
+  transform: rotate3d(90, 90, 0, 180deg);
+  border-color: #ff3d00;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes prixClipFix {
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
+  75%,
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
   }
 }

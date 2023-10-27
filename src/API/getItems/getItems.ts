@@ -14,7 +14,6 @@ export const getItems = async (searchValue: string, page: number) => {
       name: searchValue,
     },
   });
-  console.log(response);
 
   return response.data;
 };
