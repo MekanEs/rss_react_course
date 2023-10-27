@@ -18,7 +18,7 @@ const Header: FC<HeaderPropstype> = ({
     <div className="header_container">
       <input
         className="input"
-        type="text"
+        type="search"
         value={searchQuery}
         onChange={setSearchQuery}
       />
