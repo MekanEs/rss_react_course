@@ -18,7 +18,6 @@ const ItemList: FC<ItemListPropstype> = ({ items, setBackground }) => {
               <div className="contenBlock">
                 <img
                   onMouseOver={() => {
-                    console.log('background');
                     setBackground(el.poster?.previewUrl || el.poster.url);
                   }}
                   className="poster"
