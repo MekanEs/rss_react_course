@@ -47,7 +47,6 @@ class App extends React.Component<object, AppStatetype> {
   }
   setBackground: (url: string) => void = (url) => {
     this.setState({ ...this.state, background: `url(${url})` });
-    console.log(this.state.background);
   };
   setIsPending: (value: boolean) => void = (value) => {
     this.setState({
