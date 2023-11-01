@@ -7,8 +7,6 @@ type ItemListPropstype = {
 };
 
 const ItemList: FC<ItemListPropstype> = ({ items, setBackground }) => {
-  console.log(items);
-
   return (
     <>
       {!(items instanceof Error) &&

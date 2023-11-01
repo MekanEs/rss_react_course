@@ -46,7 +46,6 @@ class App extends React.Component<object, AppStatetype> {
     this.search = this.search.bind(this);
   }
   setBackground: (url: string) => void = (url) => {
-    console.log(url);
     this.setState({ ...this.state, background: `url(${url})` });
   };
   setIsPending: (value: boolean) => void = (value) => {
@@ -76,7 +75,6 @@ class App extends React.Component<object, AppStatetype> {
       this.state.searchValue,
       this.state.page
     );
-    console.log(response);
     if (response !== undefined) {
       this.setItems(response.docs);
     } else {
