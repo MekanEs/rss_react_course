@@ -8,12 +8,19 @@ export type responsetype = {
   total: number;
 };
 export const getItems = async (searchValue: string, page: number) => {
-  const response: { data: responsetype } = await instance.get('/v1.3/movie', {
-    params: {
-      page: page,
-      name: searchValue,
-    },
-  });
+  try {
+    const response: { data: responsetype; status: number } = await instance.get(
+      '/v1.3/movie',
+      {
+        params: {
+          page: page,
+          name: searchValue,
+        },
+      }
+    );
 
-  return response.data;
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
 };

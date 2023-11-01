@@ -46,6 +46,7 @@ class App extends React.Component<object, AppStatetype> {
     this.search = this.search.bind(this);
   }
   setBackground: (url: string) => void = (url) => {
+    console.log(url);
     this.setState({ ...this.state, background: `url(${url})` });
   };
   setIsPending: (value: boolean) => void = (value) => {
@@ -71,12 +72,18 @@ class App extends React.Component<object, AppStatetype> {
   search: () => void = async () => {
     this.setIsPending(true);
     localStorage.setItem(SEARCH_VALUE_KEY, this.state.searchValue);
-    const response: responsetype = await getItems(
+    const response: responsetype | undefined = await getItems(
       this.state.searchValue,
       this.state.page
     );
-    this.setItems(response.docs);
+    console.log(response);
+    if (response !== undefined) {
+      this.setItems(response.docs);
+    } else {
+      this.setIsPending(false);
+    }
   };
+
   errorFunc: () => void = () => {
     this.setState({ ...this.state, hasError: true });
   };
