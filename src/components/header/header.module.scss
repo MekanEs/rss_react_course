@@ -12,5 +12,6 @@
 .errorButton {
   @include outline;
   @include interactive-elem;
+  @include control-elem;
   @include accent-text;
 }

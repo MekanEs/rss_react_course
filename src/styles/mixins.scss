@@ -18,11 +18,14 @@
 @mixin outline {
   outline: $default-outline-color 1px solid;
 }
-
-@mixin interactive-elem {
+@mixin control-elem {
   padding: 5px 10px;
   background-color: var(--element-background);
   height: 36px;
+}
+
+@mixin interactive-elem {
+  cursor: pointer;
 
   &:hover {
     background-color: $default-outline-color;

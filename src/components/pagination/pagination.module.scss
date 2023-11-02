@@ -6,6 +6,7 @@
   width: fit-content;
   span {
     @include outline;
+    @include control-elem;
     @include interactive-elem;
     cursor: pointer;
     margin: 5px;

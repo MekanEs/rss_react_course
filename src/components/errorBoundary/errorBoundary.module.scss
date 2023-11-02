@@ -10,6 +10,7 @@
 }
 .button {
   @include outline;
+  @include control-elem;
   @include interactive-elem;
   @include accent-text;
 }

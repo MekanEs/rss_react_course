@@ -2,12 +2,13 @@
 
 .searchInput {
   @include outline;
-  @include interactive-elem;
+  @include control-elem;
   @include def-text;
 }
 
 .searchButton {
   @include outline;
+  @include control-elem;
   @include interactive-elem;
   @include accent-text;
 }
