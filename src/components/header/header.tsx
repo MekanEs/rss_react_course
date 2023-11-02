@@ -1,30 +1,27 @@
-import React, { FC } from 'react';
-import { SetSearchQuerytype } from '../../App';
+import React, { FC, useState } from 'react';
 
-type HeaderPropstype = {
-  searchQuery: string;
-  setSearchQuery: SetSearchQuerytype;
-  search: () => void;
-  error: () => void;
-};
+import styles from './header.module.scss';
+import Search from '../search/search';
+import ThemeToggler from '../themeToggler/themeToggler';
 
-const Header: FC<HeaderPropstype> = ({
-  search,
-  searchQuery,
-  setSearchQuery,
-  error,
-}) => {
+const Header: FC = () => {
+  const [hasError, setHasError] = useState<boolean>(false);
+  if (hasError) {
+    throw new Error();
+  }
   return (
-    <div className="header_container">
-      <input
-        className="input"
-        type="search"
-        value={searchQuery}
-        onChange={setSearchQuery}
-      />
-      <button onClick={search}>Search</button>
-      <button onClick={error}>Error</button>
-    </div>
+    <header className={styles.header}>
+      <Search />
+      <ThemeToggler />
+      <button
+        className={styles.errorButton}
+        onClick={() => {
+          setHasError(true);
+        }}
+      >
+        error
+      </button>
+    </header>
   );
 };
 

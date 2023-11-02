@@ -1,0 +1,53 @@
+@import './variables.scss';
+
+// Themes
+
+@mixin app-light {
+  --element-background: #bfb1b1;
+  --font-color: #1d1717;
+  color: var(--font-color);
+}
+
+@mixin app-dark {
+  --font-color: #ffe81f;
+  --element-background: #3c4055;
+  color: var(--font-color);
+}
+
+// elements
+@mixin outline {
+  outline: $default-outline-color 1px solid;
+}
+
+@mixin interactive-elem {
+  padding: 5px 10px;
+  background-color: var(--element-background);
+  height: 36px;
+
+  &:hover {
+    background-color: $default-outline-color;
+  }
+}
+
+// typography
+
+@mixin header {
+  font-family: StJedi, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+@mixin accent-text {
+  font-family: StJedi, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 3px;
+  line-height: 1px;
+}
+
+@mixin def-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 600;
+  font-size: 18px;
+}
