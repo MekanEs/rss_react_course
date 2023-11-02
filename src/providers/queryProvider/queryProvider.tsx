@@ -10,17 +10,23 @@ const QueryProvider: FC<QueryProviderProps> = ({ children }) => {
   const savedValue = localStorage.getItem('search_value') || '';
   const [searchValue, setSearchValue] = useState<string>(savedValue);
   const [inputValue, setInputValue] = useState<string>(savedValue);
-  const [limit, setLimit] = useState<number>(10);
+  const [limit, setLimit] = useState<number>(
+    Number(localStorage.getItem('limits')) || 10
+  );
   const saveSearchValue = (value: string) => {
     localStorage.setItem('search_value', value);
     setSearchValue(value);
+  };
+  const saveLimit = (value: number) => {
+    localStorage.setItem('limits', `${value}`);
+    setLimit(value);
   };
   const defaultProviderValue = useMemo(
     () => ({
       searchValue,
       saveSearchValue,
       limit,
-      setLimit,
+      setLimit: saveLimit,
       inputValue,
       setInputValue,
     }),

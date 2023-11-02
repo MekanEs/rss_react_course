@@ -1,0 +1,13 @@
+@import '../../styles/mixins.scss';
+
+.pagination {
+  display: flex;
+  margin: 10px auto;
+  width: fit-content;
+  span {
+    @include outline;
+    @include interactive-elem;
+    cursor: pointer;
+    margin: 5px;
+  }
+}

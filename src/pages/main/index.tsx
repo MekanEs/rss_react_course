@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getItems } from '../../API/getItems/getItems';
 import { QueryContext } from '../../providers';
+import { Pagination } from '../../components';
 
 export type item = {
   name: string;
@@ -56,21 +57,7 @@ const Main: FC = () => {
       {items.map((el) => (
         <div key={el.name}>{el.name}</div>
       ))}
-      {total && Math.ceil(total / limit)}
-      {total &&
-        Array(Math.ceil(total / limit))
-          .fill(0)
-          .map((_, ind) => (
-            <div
-              onClick={() => {
-                setPage(ind + 1);
-                nav(`/page/${ind + 1}`);
-              }}
-              key={ind}
-            >
-              {ind + 1}
-            </div>
-          ))}
+      <Pagination total={total} page={page} setPage={setPage} />
       <input
         type="number"
         value={limit}
@@ -79,6 +66,7 @@ const Main: FC = () => {
         step={5}
         onChange={(e) => {
           setPage(1);
+          nav('/');
           setLimit && setLimit(+e.target.value);
         }}
       />

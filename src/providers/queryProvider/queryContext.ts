@@ -6,11 +6,11 @@ interface QueryContextProps {
   inputValue: string;
   setInputValue?: React.Dispatch<React.SetStateAction<string>>;
   saveSearchValue?: (value: string) => void;
-  setLimit?: React.Dispatch<React.SetStateAction<number>>;
+  setLimit?: (value: number) => void;
 }
 export const QueryContext = createContext<QueryContextProps>({
   searchValue: '',
-  limit: 10,
+  limit: Number(localStorage.getItem('limits')) || 10,
   saveSearchValue: () => {},
   inputValue: '',
 });
