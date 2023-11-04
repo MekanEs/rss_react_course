@@ -1,10 +1,10 @@
-import { itemsArrtype } from '../../pages/main';
+import { personArr } from '../../pages/main';
 import { instance } from '../axios.config';
 
-const imageBaseUrl =
+export const imageBaseUrl =
   'https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/main/static/assets/img/people/';
 
-type responeResultstype = {
+export interface person {
   birth_year?: string;
   eye_color?: string;
   films?: string[];
@@ -19,10 +19,11 @@ type responeResultstype = {
   starships?: string[];
   url: string;
   vehicles?: string[];
-};
+  imageURL: string;
+}
 export type responsetype = {
   total: number;
-  items: responeResultstype[];
+  items: person[];
 };
 
 export const getItems = async (
@@ -30,14 +31,15 @@ export const getItems = async (
   page: number,
   limit: number
 ): Promise<{
-  items: itemsArrtype;
+  items: personArr;
   total: number | undefined;
   detail?: string;
 }> => {
   try {
     const ind = limit === 10 ? [0] : (limit * page) % 10 === 0 ? [5] : [0, 5];
     const curPage = Math.ceil((limit * page) / 10);
-    const result: { items: itemsArrtype; total: number } = await instance
+
+    const result: { items: personArr; total: number } = await instance
       .get('people/', {
         params: {
           page: curPage || 1,
@@ -47,7 +49,7 @@ export const getItems = async (
       .then((data) => {
         const resObj = { items: [], total: 0 };
         resObj.items = data.data.results
-          .map((el: responeResultstype) => ({
+          .map((el: person) => ({
             ...el,
             imageURL: `${imageBaseUrl}${el.url.split('/')[5]}.jpg?raw=true`,
           }))

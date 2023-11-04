@@ -4,11 +4,22 @@
   display: flex;
   margin: 10px auto;
   width: fit-content;
+  button,
   span {
     @include outline;
     @include control-elem;
     @include interactive-elem;
     cursor: pointer;
     margin: 5px;
+    &:disabled {
+      cursor: default;
+    }
   }
+  span {
+    cursor: default;
+  }
+}
+
+.limit {
+  @include control-elem;
 }

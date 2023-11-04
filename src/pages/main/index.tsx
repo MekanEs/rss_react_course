@@ -1,26 +1,30 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getItems } from '../../API/getItems/getItems';
+import { getItems, person } from '../../API/getItems/getItems';
 import { QueryContext } from '../../providers';
 import { Pagination } from '../../components';
+import CardContainer from '../../components/cardContainer/cardContainer';
+import Loader from '../../components/loader/loader';
 
-export type item = {
-  name: string;
-  description: string[];
-  id: string;
-  imageURL: string;
-};
-export type itemsArrtype = item[];
+export type personArr = person[];
 
 const Main: FC = () => {
   const nav = useNavigate();
   const location = useLocation();
   const { searchValue, limit, saveSearchValue, setInputValue, setLimit } =
     useContext(QueryContext);
-  const [items, setItems] = useState<itemsArrtype>([]);
+  const [personArr, setPersonArr] = useState<personArr>([]);
   const [total, setTotal] = useState<number | null | undefined>(null);
-  const [page, setPage] = useState<number>(+location.pathname.slice(6) || 1);
+  const page = +location.pathname.slice(6) || 1;
+
   const [isPending, setIsPending] = useState<boolean>(false);
+
+  useEffect(() => {
+    if ((total && page > Math.ceil(total / limit)) || page < 0) {
+      nav('/not-found');
+    }
+  }, [total, limit, nav, page]);
+
   useEffect(() => {
     setIsPending(true);
 
@@ -28,16 +32,16 @@ const Main: FC = () => {
       if (data.detail) {
         nav('/not-found', { replace: true });
       }
-      setItems(data.items);
+      setPersonArr(data.items);
       setTotal(data.total);
       setIsPending(false);
     });
-  }, [searchValue, page, nav, setPage, limit]);
+  }, [searchValue, page, nav, limit]);
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
-  if (items.length === 0) {
+  if (personArr.length === 0) {
     return (
       <div>
         noting is found
@@ -53,24 +57,10 @@ const Main: FC = () => {
     );
   }
   return (
-    <div>
-      {items.map((el) => (
-        <div key={el.name}>{el.name}</div>
-      ))}
-      <Pagination total={total} page={page} setPage={setPage} />
-      <input
-        type="number"
-        value={limit}
-        min={5}
-        max={10}
-        step={5}
-        onChange={(e) => {
-          setPage(1);
-          nav('/');
-          setLimit && setLimit(+e.target.value);
-        }}
-      />
-    </div>
+    <>
+      <CardContainer personArr={personArr} />
+      <Pagination total={total} page={page} setLimit={setLimit} />
+    </>
   );
 };
 

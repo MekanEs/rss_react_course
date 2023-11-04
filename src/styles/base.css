@@ -17,3 +17,8 @@ input {
   font: inherit;
   color: inherit;
 }
+
+button:disabled {
+  background-color: grey;
+  border: 1px solid #000;
+}

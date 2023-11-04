@@ -3,11 +3,12 @@ import React, { useContext } from 'react';
 import { QueryContext } from '../../providers';
 
 import styles from './search.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Search: React.FC = () => {
-  const { saveSearchValue, inputValue, setInputValue } =
+  const { saveSearchValue, inputValue, setInputValue, searchValue } =
     useContext(QueryContext);
-
+  const nav = useNavigate();
   return (
     <>
       <input
@@ -18,7 +19,12 @@ const Search: React.FC = () => {
       />
       <button
         className={`${styles.searchButton}`}
-        onClick={() => saveSearchValue && saveSearchValue(inputValue)}
+        onClick={() => {
+          if (inputValue !== searchValue) {
+            nav('/');
+            saveSearchValue && saveSearchValue(inputValue);
+          }
+        }}
       >
         Search
       </button>
