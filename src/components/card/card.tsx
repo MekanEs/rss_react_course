@@ -15,6 +15,8 @@ const Card: React.FC<CardProps> = ({ person, setCurPerson }) => {
     setClassName('');
     setPendingPhoto(false);
   };
+  console.log(pendingPhoto);
+
   return (
     <div
       onClick={(e) => {
@@ -25,14 +27,13 @@ const Card: React.FC<CardProps> = ({ person, setCurPerson }) => {
     >
       <h2>{person.name}</h2>
       <div>
-        <Loader showLoader={pendingPhoto}>
-          <img
-            className={imgClassName}
-            src={person.imageURL}
-            alt="image of person"
-            onLoad={onLoad}
-          />
-        </Loader>
+        <Loader showLoader={pendingPhoto} />
+        <img
+          className={imgClassName}
+          src={person.imageURL}
+          alt="image of person"
+          onLoad={onLoad}
+        />
 
         <div>eye color: {person.eye_color}</div>
         <div>hair color: {person.hair_color}</div>
