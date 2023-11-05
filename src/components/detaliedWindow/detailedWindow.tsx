@@ -44,15 +44,14 @@ const DetailedWindow: React.FC<DetailedWindowProps> = ({
         </button>
         <h2>{person.name}</h2>
         <div>
-          <Loader showLoader={pendingPhoto}>
-            <img
-              src={person.imageURL}
-              alt="image of person"
-              onLoad={() => {
-                setPendingPhoto(false);
-              }}
-            />
-          </Loader>
+          <Loader showLoader={pendingPhoto} />
+          <img
+            src={person.imageURL}
+            alt="image of person"
+            onLoad={() => {
+              setPendingPhoto(false);
+            }}
+          />
 
           <div>birth year: {person.birth_year}</div>
           <div>hair color: {person.hair_color}</div>

@@ -15,7 +15,6 @@ const Card: React.FC<CardProps> = ({ person, setCurPerson }) => {
     setClassName('');
     setPendingPhoto(false);
   };
-  console.log(pendingPhoto);
 
   return (
     <div
