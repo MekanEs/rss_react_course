@@ -25,13 +25,15 @@ const Card: React.FC<CardProps> = ({ person, setCurPerson }) => {
     >
       <h2>{person.name}</h2>
       <div>
-        <img
-          className={imgClassName}
-          src={person.imageURL}
-          alt="image of person"
-          onLoad={onLoad}
-        />
-        {pendingPhoto && <Loader />}
+        <Loader showLoader={pendingPhoto}>
+          <img
+            className={imgClassName}
+            src={person.imageURL}
+            alt="image of person"
+            onLoad={onLoad}
+          />
+        </Loader>
+
         <div>eye color: {person.eye_color}</div>
         <div>hair color: {person.hair_color}</div>
       </div>

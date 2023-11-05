@@ -29,39 +29,39 @@ const DetailedWindow: React.FC<DetailedWindowProps> = ({
       setPerson(null);
     }
   }, [personURL]);
+
+  if (!person) {
+    return <></>;
+  }
   return (
-    person && (
-      <div className={styles.detailedWindow}>
-        {pending ? (
-          <Loader />
-        ) : (
-          <>
-            <button
-              className={styles.closeButton}
-              onClick={() => setCurPerson(null)}
-            >
-              X
-            </button>
-            <h2>{person.name}</h2>
-            <div>
-              <img
-                src={person.imageURL}
-                alt="image of person"
-                onLoad={() => {
-                  setPendingPhoto(false);
-                }}
-              />
-              {pendingPhoto && <Loader />}
-              <div>birth year: {person.birth_year}</div>
-              <div>hair color: {person.hair_color}</div>
-              <div>gender: {person.gender}</div>
-              <div>mass: {person.mass}</div>
-              <div>skin color: {person.skin_color}</div>
-            </div>
-          </>
-        )}
-      </div>
-    )
+    <div className={styles.detailedWindow}>
+      <Loader showLoader={pending}>
+        <button
+          className={styles.closeButton}
+          onClick={() => setCurPerson(null)}
+        >
+          X
+        </button>
+        <h2>{person.name}</h2>
+        <div>
+          <Loader showLoader={pendingPhoto}>
+            <img
+              src={person.imageURL}
+              alt="image of person"
+              onLoad={() => {
+                setPendingPhoto(false);
+              }}
+            />
+          </Loader>
+
+          <div>birth year: {person.birth_year}</div>
+          <div>hair color: {person.hair_color}</div>
+          <div>gender: {person.gender}</div>
+          <div>mass: {person.mass}</div>
+          <div>skin color: {person.skin_color}</div>
+        </div>
+      </Loader>
+    </div>
   );
 };
 

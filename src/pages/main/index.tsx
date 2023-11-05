@@ -38,22 +38,21 @@ const Main: FC = () => {
     });
   }, [searchValue, page, nav, limit]);
 
-  if (isPending) {
-    return <Loader />;
-  }
   if (personArr.length === 0) {
     return (
-      <div>
-        noting is found
-        <button
-          onClick={() => {
-            setInputValue && setInputValue('');
-            saveSearchValue && saveSearchValue('');
-          }}
-        >
-          clear
-        </button>
-      </div>
+      <Loader showLoader={isPending}>
+        <div>
+          noting is found
+          <button
+            onClick={() => {
+              setInputValue && setInputValue('');
+              saveSearchValue && saveSearchValue('');
+            }}
+          >
+            clear
+          </button>
+        </div>
+      </Loader>
     );
   }
   return (
