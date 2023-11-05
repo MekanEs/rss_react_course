@@ -33,9 +33,6 @@ const Card: React.FC<CardProps> = ({ person, setCurPerson }) => {
           alt="image of person"
           onLoad={onLoad}
         />
-
-        <div>eye color: {person.eye_color}</div>
-        <div>hair color: {person.hair_color}</div>
       </div>
     </div>
   );

@@ -5,12 +5,13 @@ import { ErrorBoundary, Header } from '../../components';
 import { ThemeContext } from '../../providers';
 
 import styles from './layout.module.scss';
+import { classNames } from '../../utils';
 
 const Layout: React.FC = () => {
   const { theme } = useContext(ThemeContext);
   return (
     <ErrorBoundary>
-      <div className={`${styles.app} ${styles[theme]}`}>
+      <div className={classNames(styles.app, {}, [styles[theme]])}>
         <Header />
         <main>
           <Outlet />

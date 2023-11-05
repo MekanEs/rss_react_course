@@ -43,7 +43,7 @@ const DetailedWindow: React.FC<DetailedWindowProps> = ({
           X
         </button>
         <h2>{person.name}</h2>
-        <div>
+        <div className={styles.description}>
           <Loader showLoader={pendingPhoto} />
           <img
             src={person.imageURL}

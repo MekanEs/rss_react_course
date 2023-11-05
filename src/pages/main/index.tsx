@@ -56,10 +56,10 @@ const Main: FC = () => {
     );
   }
   return (
-    <>
+    <Loader showLoader={isPending}>
       <CardContainer personArr={personArr} />
       <Pagination total={total} page={page} setLimit={setLimit} />
-    </>
+    </Loader>
   );
 };
 

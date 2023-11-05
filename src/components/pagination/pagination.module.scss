@@ -4,22 +4,37 @@
   display: flex;
   margin: 10px auto;
   width: fit-content;
-  button,
-  span {
-    @include outline;
-    @include control-elem;
-    @include interactive-elem;
-    cursor: pointer;
-    margin: 5px;
-    &:disabled {
-      cursor: default;
-    }
-  }
-  span {
-    cursor: default;
-  }
+  align-items: center;
+  gap: 10px;
 }
 
 .limit {
+  font-weight: 600;
+  @include outline;
   @include control-elem;
+  display: flex;
+  align-items: center;
+}
+
+.limitInput {
+  @include interactive-elem;
+}
+
+.pages {
+  @include outline;
+  @include control-elem;
+  cursor: default;
+  display: flex;
+}
+
+.paginationButton {
+  @include outline;
+  @include control-elem;
+  @include interactive-elem;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 5px;
+  &:disabled {
+    cursor: default;
+  }
 }
