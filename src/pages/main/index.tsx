@@ -1,18 +1,22 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { getItems, person } from '../../API/getItems/getItems';
+import { getItems } from '../../API/getItems/getItems';
 import { QueryContext } from '../../providers';
 import { Pagination } from '../../components';
 import CardContainer from '../../components/cardContainer/cardContainer';
 import Loader from '../../components/loader/loader';
 
-export type personArr = person[];
-
 const Main: FC = () => {
   const nav = useNavigate();
-  const { searchValue, limit, saveSearchValue, setInputValue, setLimit } =
-    useContext(QueryContext);
-  const [personArr, setPersonArr] = useState<personArr>([]);
+  const {
+    searchValue,
+    limit,
+    saveSearchValue,
+    setInputValue,
+    personArr,
+    setPersonArr,
+  } = useContext(QueryContext);
+
   const [total, setTotal] = useState<number | null | undefined>(null);
   const { page } = useParams();
 
@@ -32,11 +36,13 @@ const Main: FC = () => {
         if (data.detail) {
           nav('/not-found', { replace: true });
         }
-        setPersonArr(data.items);
+        if (setPersonArr) {
+          setPersonArr(data.items);
+        }
         setTotal(data.total);
         setIsPending(false);
       });
-  }, [searchValue, page, nav, limit]);
+  }, [searchValue, page, nav, limit, setPersonArr]);
   if (!page || !+page) {
     return <Navigate to={'/page/1'} />;
   }
@@ -60,8 +66,8 @@ const Main: FC = () => {
 
   return (
     <Loader showLoader={isPending}>
-      <CardContainer personArr={personArr} page={+page} />
-      <Pagination total={total} page={+page} setLimit={setLimit} />
+      <CardContainer page={+page} />
+      <Pagination total={total} page={+page} />
     </Loader>
   );
 };

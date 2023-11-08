@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './cardContainer.module.scss';
-import { personArr } from '../../pages/main';
 import Card from '../card/card';
 import DetailedWindow from '../detaliedWindow/detailedWindow';
+import { QueryContext } from '../../providers';
 
 interface cardContainerProps {
-  personArr: personArr;
   page: number;
 }
 
-const CardContainer: React.FC<cardContainerProps> = ({ personArr, page }) => {
+const CardContainer: React.FC<cardContainerProps> = ({ page }) => {
+  const { personArr } = useContext(QueryContext);
   return (
     <div className={styles.content}>
       <div
