@@ -7,23 +7,23 @@ import PaginationButton from './paginationButton';
 interface PaginationProps {
   page: number;
   total: number | null | undefined;
-  setLimit: ((value: number) => void) | undefined;
 }
 
-const Pagination: FC<PaginationProps> = ({ page, total, setLimit }) => {
-  const { limit } = useContext(QueryContext);
+const Pagination: FC<PaginationProps> = ({ page, total }) => {
+  const { limit, setLimit } = useContext(QueryContext);
   const nav = useNavigate();
   const { id } = useParams();
+  const details = id ? `/details/${id}` : '';
   return (
     <div className={styles.pagination}>
       <PaginationButton
         text="&lt;&lt;"
-        callback={() => nav(`/page/1${id && `/details/${id}`}`)}
+        callback={() => nav(`/page/1${details}`)}
         condition={page === 1}
       />
       <PaginationButton
         text="&lt;"
-        callback={() => nav(`/page/${page - 1}${id && `/details/${id}`}`)}
+        callback={() => nav(`/page/${page - 1}${details}`)}
         condition={page === 1}
       />
 
@@ -34,14 +34,14 @@ const Pagination: FC<PaginationProps> = ({ page, total, setLimit }) => {
       )}
       <PaginationButton
         text="&gt;"
-        callback={() => nav(`/page/${page + 1}${id && `/details/${id}`}`)}
+        callback={() => nav(`/page/${page + 1}${details}`)}
         condition={!!total && page === Math.ceil(total / limit)}
       />
       <PaginationButton
         text="&gt;&gt;"
         callback={() => {
           if (total) {
-            nav(`/page/${Math.ceil(total / limit)}${id && `/details/${id}`}`);
+            nav(`/page/${Math.ceil(total / limit)}${details}`);
           }
         }}
         condition={!!total && page === Math.ceil(total / limit)}
