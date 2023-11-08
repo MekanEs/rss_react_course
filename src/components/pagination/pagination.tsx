@@ -1,7 +1,7 @@
 import React, { useContext, FC } from 'react';
 import styles from './pagination.module.scss';
 import { QueryContext } from '../../providers';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PaginationButton from './paginationButton';
 
 interface PaginationProps {
@@ -13,17 +13,17 @@ interface PaginationProps {
 const Pagination: FC<PaginationProps> = ({ page, total, setLimit }) => {
   const { limit } = useContext(QueryContext);
   const nav = useNavigate();
-
+  const { id } = useParams();
   return (
     <div className={styles.pagination}>
       <PaginationButton
         text="&lt;&lt;"
-        callback={() => nav('/')}
+        callback={() => nav(`/page/1${id && `/details/${id}`}`)}
         condition={page === 1}
       />
       <PaginationButton
         text="&lt;"
-        callback={() => nav(`/page/${page - 1}`)}
+        callback={() => nav(`/page/${page - 1}${id && `/details/${id}`}`)}
         condition={page === 1}
       />
 
@@ -34,14 +34,14 @@ const Pagination: FC<PaginationProps> = ({ page, total, setLimit }) => {
       )}
       <PaginationButton
         text="&gt;"
-        callback={() => nav(`/page/${page + 1}`)}
+        callback={() => nav(`/page/${page + 1}${id && `/details/${id}`}`)}
         condition={!!total && page === Math.ceil(total / limit)}
       />
       <PaginationButton
         text="&gt;&gt;"
         callback={() => {
           if (total) {
-            nav(`/page/${Math.ceil(total / limit)}`);
+            nav(`/page/${Math.ceil(total / limit)}${id && `/details/${id}`}`);
           }
         }}
         condition={!!total && page === Math.ceil(total / limit)}
