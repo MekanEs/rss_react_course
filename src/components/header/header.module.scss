@@ -1,0 +1,17 @@
+@import '../../styles/mixins.scss';
+
+.header {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.errorButton {
+  @include outline;
+  @include interactive-elem;
+  @include control-elem;
+  @include accent-text;
+}

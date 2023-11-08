@@ -1,0 +1,16 @@
+@import '../../styles/mixins.scss';
+
+.errorWindow {
+  margin: 10% auto;
+  width: fit-content;
+  h2 {
+    font-family: StJedi, sans-serif;
+    color: red;
+  }
+}
+.button {
+  @include outline;
+  @include control-elem;
+  @include interactive-elem;
+  @include accent-text;
+}
