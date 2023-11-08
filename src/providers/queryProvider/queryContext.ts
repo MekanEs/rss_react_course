@@ -7,7 +7,7 @@ interface QueryContextProps {
   inputValue: string;
   setInputValue?: React.Dispatch<React.SetStateAction<string>>;
   saveSearchValue?: (value: string) => void;
-  setLimit?: (value: number) => void;
+  saveLimit?: (value: number) => void;
   personArr: personArr;
   setPersonArr?: React.Dispatch<React.SetStateAction<personArr>>;
 }

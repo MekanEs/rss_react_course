@@ -10,7 +10,7 @@ interface PaginationProps {
 }
 
 const Pagination: FC<PaginationProps> = ({ page, total }) => {
-  const { limit, setLimit } = useContext(QueryContext);
+  const { limit, saveLimit } = useContext(QueryContext);
   const nav = useNavigate();
   const { id } = useParams();
   const details = id ? `/details/${id}` : '';
@@ -59,7 +59,7 @@ const Pagination: FC<PaginationProps> = ({ page, total }) => {
           step={5}
           onChange={(e) => {
             nav('/');
-            setLimit && setLimit(+e.target.value);
+            saveLimit && saveLimit(+e.target.value);
           }}
         />
       </div>

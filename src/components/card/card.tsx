@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import styles from './card.module.scss';
 import { person } from '../../API/getItems/getItems';
 import Loader from '../loader/loader';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface CardProps {
   person: person;
-  // setCurPerson: React.Dispatch<React.SetStateAction<string | null>>;
-  page: number;
 }
 
-const Card: React.FC<CardProps> = ({ person, page }) => {
+const Card: React.FC<CardProps> = ({ person }) => {
+  const { page } = useParams();
   const [pendingPhoto, setPendingPhoto] = useState<boolean>(true);
   const [imgClassName, setClassName] = useState<string>(styles.invisible);
   const onLoad = () => {
@@ -23,8 +22,7 @@ const Card: React.FC<CardProps> = ({ person, page }) => {
     <div
       onClick={(e) => {
         e.stopPropagation();
-
-        nav(`/page/${page}/details/${id[id.length - 2]}`);
+        nav(`/page/${page || 1}/details/${id[id.length - 2]}`);
       }}
       className={styles.card}
     >

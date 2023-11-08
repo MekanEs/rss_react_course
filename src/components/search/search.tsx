@@ -6,7 +6,7 @@ import styles from './search.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 const Search: React.FC = () => {
-  const { saveSearchValue, inputValue, setInputValue, searchValue } =
+  const { inputValue, saveSearchValue, setInputValue, searchValue } =
     useContext(QueryContext);
   const nav = useNavigate();
   return (
@@ -14,6 +14,7 @@ const Search: React.FC = () => {
       <input
         className={`${styles.searchInput}`}
         type="search"
+        name="search"
         value={inputValue}
         onChange={(e) => setInputValue && setInputValue(e.target.value)}
       />

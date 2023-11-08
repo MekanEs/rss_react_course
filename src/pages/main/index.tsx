@@ -11,23 +11,26 @@ const Main: FC = () => {
   const {
     searchValue,
     limit,
-    saveSearchValue,
-    setInputValue,
-    personArr,
+
     setPersonArr,
   } = useContext(QueryContext);
 
   const [total, setTotal] = useState<number | null | undefined>(null);
-  const { page } = useParams();
+  const { page, id } = useParams();
 
   const [isPending, setIsPending] = useState<boolean>(false);
 
   useEffect(() => {
-    if (page)
-      if ((total && +page > Math.ceil(total / limit)) || +page < 0) {
+    console.log(id);
+    if (page && total) {
+      if (+page > Math.ceil(total / limit) || +page < 0) {
         nav('/not-found');
       }
-  }, [total, limit, nav, page]);
+      if ((id && +id > total) || (id && +id < 0)) {
+        nav('/not-found');
+      }
+    }
+  }, [total, limit, nav, page, id]);
 
   useEffect(() => {
     setIsPending(true);
@@ -46,27 +49,10 @@ const Main: FC = () => {
   if (!page || !+page) {
     return <Navigate to={'/page/1'} />;
   }
-  if (personArr.length === 0) {
-    return (
-      <Loader showLoader={isPending}>
-        <div>
-          noting is found
-          <button
-            onClick={() => {
-              setInputValue && setInputValue('');
-              saveSearchValue && saveSearchValue('');
-            }}
-          >
-            clear
-          </button>
-        </div>
-      </Loader>
-    );
-  }
 
   return (
     <Loader showLoader={isPending}>
-      <CardContainer page={+page} />
+      <CardContainer />
       <Pagination total={total} page={+page} />
     </Loader>
   );

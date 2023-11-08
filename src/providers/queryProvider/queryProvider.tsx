@@ -29,7 +29,7 @@ const QueryProvider: FC<QueryProviderProps> = ({ children }) => {
       searchValue,
       saveSearchValue,
       limit,
-      setLimit: saveLimit,
+      saveLimit,
       inputValue,
       setInputValue,
       personArr,
