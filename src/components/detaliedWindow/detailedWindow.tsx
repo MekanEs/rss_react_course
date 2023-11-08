@@ -3,23 +3,18 @@ import styles from './detailedWindow.module.scss';
 import { person } from '../../API/getItems/getItems';
 import { getPerson } from '../../API/getItems/getPerson';
 import Loader from '../loader/loader';
+import { useNavigate, useParams } from 'react-router-dom';
 
-interface DetailedWindowProps {
-  personURL: string | null;
-  setCurPerson: React.Dispatch<React.SetStateAction<string | null>>;
-}
-
-const DetailedWindow: React.FC<DetailedWindowProps> = ({
-  personURL,
-  setCurPerson,
-}) => {
+const DetailedWindow: React.FC = () => {
   const [person, setPerson] = useState<person | null>(null);
   const [pending, setPending] = useState<boolean>(false);
   const [pendingPhoto, setPendingPhoto] = useState<boolean>(true);
+  const { id, page } = useParams();
+  const nav = useNavigate();
   useEffect(() => {
-    if (personURL !== null) {
+    if (id) {
       setPending(true);
-      getPerson(personURL).then((pers) => {
+      getPerson(`https://swapi.dev/api/people/${id}`).then((pers) => {
         if (pers) {
           setPerson(pers);
           setPending(false);
@@ -28,9 +23,9 @@ const DetailedWindow: React.FC<DetailedWindowProps> = ({
     } else {
       setPerson(null);
     }
-  }, [personURL]);
+  }, [id]);
 
-  if (!person) {
+  if (!id || !person) {
     return <></>;
   }
   return (
@@ -38,7 +33,7 @@ const DetailedWindow: React.FC<DetailedWindowProps> = ({
       <Loader showLoader={pending}>
         <button
           className={styles.closeButton}
-          onClick={() => setCurPerson(null)}
+          onClick={() => nav(`/page/${page}`)}
         >
           X
         </button>

@@ -8,14 +8,8 @@ interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ children, showLoader }) => {
   const loader = <span className={styles.loader}></span>;
-  if (!children) {
-    if (showLoader) {
-      return loader;
-    } else {
-      return <></>;
-    }
-  }
-  return showLoader ? loader : <>{children}</>;
+
+  return showLoader ? loader : <>{children && children}</>;
 };
 
 export default Loader;

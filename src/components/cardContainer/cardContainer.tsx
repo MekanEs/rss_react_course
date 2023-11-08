@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './cardContainer.module.scss';
 import { personArr } from '../../pages/main';
 import Card from '../card/card';
@@ -6,24 +6,23 @@ import DetailedWindow from '../detaliedWindow/detailedWindow';
 
 interface cardContainerProps {
   personArr: personArr;
+  page: number;
 }
 
-const CardContainer: React.FC<cardContainerProps> = ({ personArr }) => {
-  const [curPerson, setCurPerson] = useState<string | null>(null);
+const CardContainer: React.FC<cardContainerProps> = ({ personArr, page }) => {
   return (
     <div className={styles.content}>
       <div
         onClick={(e) => {
           e.stopPropagation();
-          setCurPerson(null);
         }}
         className={styles.cardContainer}
       >
         {personArr.map((person) => (
-          <Card setCurPerson={setCurPerson} key={person.name} person={person} />
+          <Card key={person.name} person={person} page={page} />
         ))}
       </div>
-      <DetailedWindow setCurPerson={setCurPerson} personURL={curPerson} />
+      <DetailedWindow />
     </div>
   );
 };

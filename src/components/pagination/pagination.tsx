@@ -13,6 +13,7 @@ interface PaginationProps {
 const Pagination: FC<PaginationProps> = ({ page, total, setLimit }) => {
   const { limit } = useContext(QueryContext);
   const nav = useNavigate();
+
   return (
     <div className={styles.pagination}>
       <PaginationButton
