@@ -19,6 +19,24 @@ describe('Pagination', () => {
     expect(screen.getByText('>>')).toBeInTheDocument();
     expect(screen.getByText('limit:')).toBeInTheDocument();
   });
+  it('updates URL query parameter when page changes', () => {
+    render(
+      <QueryContext.Provider
+        value={{
+          saveLimit: vi.fn(),
+          limit: 1,
+          searchValue: '',
+          inputValue: '5',
+          personArr: [],
+        }}
+      >
+        <Pagination page={1} total={10} />
+      </QueryContext.Provider>
+    );
+    const nexPage = screen.getByText('>');
+    fireEvent.click(nexPage);
+    expect(mockUsedNavigate).toBeCalled();
+  });
   it('handle events', () => {
     const saveLimit = vi.fn();
     render(

@@ -42,6 +42,11 @@ describe('Card Component', () => {
     render(<Card person={person} />);
     expect(screen.getByAltText('image of person')).toBeInTheDocument();
   });
+  it('renders the relevant card data', () => {
+    render(<Card person={person} />);
+    const name = screen.getByText('R2-D2');
+    expect(name).toBeInTheDocument();
+  });
   it('loader is rendered', () => {
     render(<Card person={person} />);
 

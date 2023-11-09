@@ -1,4 +1,4 @@
-import { personArr } from '../../pages/main';
+import { personArr } from '../../providers/queryProvider/queryProvider';
 import { instance } from '../axios.config';
 
 export const imageBaseUrl =

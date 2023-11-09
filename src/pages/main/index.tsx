@@ -21,7 +21,6 @@ const Main: FC = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(id);
     if (page && total) {
       if (+page > Math.ceil(total / limit) || +page < 0) {
         nav('/not-found');
