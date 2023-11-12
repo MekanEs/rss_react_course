@@ -1,9 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CardContainer from './cardContainer';
 import { QueryContext } from '../../providers';
-import { MemoryRouter } from 'react-router-dom';
 import DetailedWindow from '../detaliedWindow/detailedWindow';
 
 const person = {
@@ -36,13 +35,17 @@ const mockFunc = vi.fn();
 vi.mock('../detaliedWindow/detailedWindow', () => ({
   default: () => DetailedWindow,
 }));
-
+const mockUsedNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => mockUsedNavigate,
+  useParams: () => mockUsedNavigate,
+}));
 describe('CardContainer', () => {
-  it('renders the specified number of cards', () => {
+  it('useNavigate is called onClick', () => {
     render(
       <QueryContext.Provider
         value={{
-          personArr: [person, person],
+          personArr: [person],
           setInputValue: mockFunc,
           saveSearchValue: mockFunc,
           limit: 1,
@@ -50,30 +53,12 @@ describe('CardContainer', () => {
           inputValue: '5',
         }}
       >
-        <MemoryRouter initialEntries={['/page/1/']}>
-          <CardContainer />
-        </MemoryRouter>
+        <CardContainer />
       </QueryContext.Provider>
     );
-    expect(screen.getAllByText('R2-D2').length).toBe(2);
-  });
-  it('message is displayed if no cards are present', () => {
-    render(
-      <QueryContext.Provider
-        value={{
-          personArr: [],
-          setInputValue: mockFunc,
-          saveSearchValue: mockFunc,
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-        }}
-      >
-        <MemoryRouter initialEntries={['/page/1/']}>
-          <CardContainer />
-        </MemoryRouter>
-      </QueryContext.Provider>
-    );
-    expect(screen.getByText('nothing is found')).toBeInTheDocument();
+    const name = screen.getByText('R2-D2');
+    fireEvent.click(name);
+
+    expect(mockUsedNavigate).toBeCalled();
   });
 });

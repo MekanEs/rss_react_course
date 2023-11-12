@@ -2,9 +2,7 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getItems } from '../../API/getItems/getItems';
 import { QueryContext } from '../../providers';
-import { Pagination } from '../../components';
-import CardContainer from '../../components/cardContainer/cardContainer';
-import Loader from '../../components/loader/loader';
+import { CardContainer, Loader, Pagination } from '../../components';
 
 const Main: FC = () => {
   const nav = useNavigate();
@@ -19,7 +17,6 @@ const Main: FC = () => {
   const { page, id } = useParams();
 
   const [isPending, setIsPending] = useState<boolean>(false);
-
   useEffect(() => {
     if (page && total) {
       if (+page > Math.ceil(total / limit) || +page < 0) {

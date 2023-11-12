@@ -35,6 +35,7 @@ describe('Pagination', () => {
     );
     const nexPage = screen.getByText('>');
     fireEvent.click(nexPage);
+
     expect(mockUsedNavigate).toBeCalled();
   });
   it('handle events', () => {

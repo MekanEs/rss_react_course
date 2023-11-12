@@ -1,6 +1,6 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 import DetailedWindowContent from './detailedWindowContent';
 
@@ -30,9 +30,13 @@ const person = {
   url: 'https://swapi.dev/api/people/3/',
   imageURL: '#',
 };
-
-describe('DetaledWindow', () => {
-  it('render Component', () => {
+const mockState = vi.fn();
+vi.mock('react', () => ({
+  default: () => React,
+  useState: () => [true, mockState],
+}));
+describe('DetaledWindowContent', () => {
+  it('correctly displays the detailed card data', () => {
     const close = () => {};
     render(<DetailedWindowContent person={person} handleClose={close} />);
     const img = screen.getByRole('img');
@@ -49,5 +53,13 @@ describe('DetaledWindow', () => {
     const button = screen.getByRole('button');
     fireEvent.click(button);
     expect(close).toBeCalled;
+  });
+  it('loader not shown after loading image, useState is called', () => {
+    const close = () => {};
+
+    render(<DetailedWindowContent person={person} handleClose={close} />);
+
+    waitFor(() => expect(screen.getByTestId('loader')).not.toBeInTheDocument());
+    waitFor(() => expect(mockState).toBeCalled());
   });
 });

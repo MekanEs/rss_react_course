@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Search from './search';
-import { QueryContext } from '../../providers';
+import { QueryContext, QueryProvider } from '../../providers';
 
 const mockUsedNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
@@ -77,5 +77,29 @@ describe('Search', () => {
     const button = screen.getByText('Search');
     fireEvent.click(button);
     expect(saveSearchValue).not.toBeCalled();
+  });
+  it('component retrieves the value from the local storage', () => {
+    localStorage.setItem('search_value', 'test');
+    render(
+      <QueryProvider>
+        <Search />
+      </QueryProvider>
+    );
+    const input = screen.getByDisplayValue('test');
+
+    expect(input).toBeInTheDocument();
+  });
+  it('Search button saves the entered value to the local storage', () => {
+    localStorage.setItem('search_value', 'test');
+    render(
+      <QueryProvider>
+        <Search />
+      </QueryProvider>
+    );
+    const input = screen.getByDisplayValue('test');
+    fireEvent.change(input, { target: { value: '23' } });
+    const button = screen.getByText('Search');
+    fireEvent.click(button);
+    expect(localStorage.getItem('search_value') === '23').toBeTruthy();
   });
 });

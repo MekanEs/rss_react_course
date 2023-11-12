@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const NotFound: React.FC = () => {
   return (
     <div>
-      Page is not found
+      <h3>Page is not found</h3>
       <Link to={'/'}>Home</Link>
     </div>
   );

@@ -24,17 +24,14 @@ export interface person {
 export type responsetype = {
   total: number;
   items: person[];
+  detail?: string;
 };
 
 export const getItems = async (
   query: string,
   page: number,
   limit: number
-): Promise<{
-  items: personArr;
-  total: number | undefined;
-  detail?: string;
-}> => {
+): Promise<responsetype> => {
   try {
     const ind = limit === 10 ? [0] : (limit * page) % 10 === 0 ? [5] : [0, 5];
     const curPage = Math.ceil((limit * page) / 10);
