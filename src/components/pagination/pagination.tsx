@@ -1,8 +1,9 @@
-import React, { useContext, FC } from 'react';
+import React, { FC } from 'react';
 import styles from './pagination.module.scss';
-import { QueryContext } from '../../providers';
 import { useNavigate, useParams } from 'react-router-dom';
 import PaginationButton from './paginationButton';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/reduxHooks';
+import { saveLimit } from '../../store/searchReducer/searchSlice';
 
 interface PaginationProps {
   page: number;
@@ -10,7 +11,8 @@ interface PaginationProps {
 }
 
 const Pagination: FC<PaginationProps> = ({ page, total }) => {
-  const { limit, saveLimit } = useContext(QueryContext);
+  const limit = useAppSelector((state) => state.search.limit);
+  const dispatch = useAppDispatch();
   const nav = useNavigate();
   const { id } = useParams();
   const details = id ? `/details/${id}` : '';
@@ -59,7 +61,7 @@ const Pagination: FC<PaginationProps> = ({ page, total }) => {
           step={5}
           onChange={(e) => {
             nav('/');
-            saveLimit && saveLimit(+e.target.value);
+            dispatch(saveLimit(Number(e.target.value)));
           }}
         />
       </div>

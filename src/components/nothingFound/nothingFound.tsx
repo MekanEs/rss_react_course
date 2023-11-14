@@ -1,15 +1,20 @@
-import React, { useContext } from 'react';
-import { QueryContext } from '../../providers';
+import React from 'react';
+import { useAppDispatch } from '../../store/hooks/reduxHooks';
+import {
+  setSaveValue,
+  setSearchValue,
+} from '../../store/searchReducer/searchSlice';
 
 const NothingFound: React.FC = () => {
-  const { setInputValue, saveSearchValue } = useContext(QueryContext);
+  const dispatch = useAppDispatch();
+
   return (
     <div>
       nothing is found
       <button
         onClick={() => {
-          setInputValue && setInputValue('');
-          saveSearchValue && saveSearchValue('');
+          dispatch(setSearchValue(''));
+          dispatch(setSaveValue(''));
         }}
       >
         clear

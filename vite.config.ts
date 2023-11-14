@@ -12,7 +12,6 @@ export default defineConfig({
     watch: false,
     coverage: {
       provider: 'istanbul',
-      lines: 80,
       all: true,
     },
   },

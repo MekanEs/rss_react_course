@@ -1,18 +1,14 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getItems } from '../../API/getItems/getItems';
-import { QueryContext } from '../../providers';
 import { CardContainer, Loader, Pagination } from '../../components';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/reduxHooks';
+import { setPersonArr } from '../../store/searchReducer/searchSlice';
 
 const Main: FC = () => {
   const nav = useNavigate();
-  const {
-    searchValue,
-    limit,
-
-    setPersonArr,
-  } = useContext(QueryContext);
-
+  const { savedValue, limit } = useAppSelector((state) => state.search);
+  const dispatch = useAppDispatch();
   const [total, setTotal] = useState<number | null | undefined>(null);
   const { page, id } = useParams();
 
@@ -30,18 +26,21 @@ const Main: FC = () => {
 
   useEffect(() => {
     setIsPending(true);
-    if (page)
-      getItems(searchValue, +page, limit).then((data) => {
+    if (page) {
+      console.log(savedValue);
+
+      getItems(savedValue, +page, limit).then((data) => {
         if (data.detail) {
           nav('/not-found', { replace: true });
         }
-        if (setPersonArr) {
-          setPersonArr(data.items);
-        }
+
+        dispatch(setPersonArr(data.items));
+
         setTotal(data.total);
         setIsPending(false);
       });
-  }, [searchValue, page, nav, limit, setPersonArr]);
+    }
+  }, [savedValue, page, nav, limit, dispatch]);
   if (!page || !+page) {
     return <Navigate to={'/page/1'} />;
   }

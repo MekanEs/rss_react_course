@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
-
-import { QueryContext } from '../../providers';
+import React from 'react';
 
 import styles from './search.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/reduxHooks';
+import {
+  setSaveValue,
+  setSearchValue,
+} from '../../store/searchReducer/searchSlice';
 
 const Search: React.FC = () => {
-  const { inputValue, saveSearchValue, setInputValue, searchValue } =
-    useContext(QueryContext);
+  const { searchValue, savedValue } = useAppSelector((state) => state.search);
+  const dispatch = useAppDispatch();
   const nav = useNavigate();
   return (
     <>
@@ -15,15 +18,15 @@ const Search: React.FC = () => {
         className={`${styles.searchInput}`}
         type="search"
         name="search"
-        value={inputValue}
-        onChange={(e) => setInputValue && setInputValue(e.target.value)}
+        value={searchValue}
+        onChange={(e) => dispatch(setSearchValue(e.target.value))}
       />
       <button
         className={`${styles.searchButton}`}
         onClick={() => {
-          if (inputValue !== searchValue) {
+          if (searchValue !== savedValue) {
             nav('/');
-            saveSearchValue && saveSearchValue(inputValue);
+            dispatch(setSaveValue(searchValue));
           }
         }}
       >

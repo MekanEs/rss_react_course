@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styles from './cardContainer.module.scss';
 import Card from '../card/card';
 import DetailedWindow from '../detaliedWindow/detailedWindow';
-import { QueryContext } from '../../providers';
 import { useNavigate, useParams } from 'react-router-dom';
 import NothingFound from '../nothingFound/nothingFound';
+import { useAppSelector } from '../../store/hooks/reduxHooks';
 
 const CardContainer: React.FC = () => {
-  const { personArr } = useContext(QueryContext);
+  const personArr = useAppSelector((state) => state.search.personArr);
   const { page } = useParams();
   const nav = useNavigate();
 
