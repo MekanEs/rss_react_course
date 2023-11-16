@@ -1,0 +1,14 @@
+@import '../../styles/mixins.scss';
+
+.searchInput {
+  @include outline;
+  @include control-elem;
+  @include def-text;
+}
+
+.searchButton {
+  @include outline;
+  @include control-elem;
+  @include interactive-elem;
+  @include accent-text;
+}
