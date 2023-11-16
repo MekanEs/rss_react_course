@@ -1,43 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styles from './detailedWindow.module.scss';
-import { person } from '../../API/getItems/getItems';
-
 import Loader from '../loader/loader';
 import { useNavigate, useParams } from 'react-router-dom';
-import getPerson from '../../API/getItems/getPerson';
 import DetailedWindowContent from './detailedWindowContent';
+import { useGetPersonQuery } from '../../API/apiSlice';
+import { setGetPersonPending } from '../../store/searchReducer/searchSlice';
+import { useAppDispatch } from '../../store/hooks/reduxHooks';
 
 const DetailedWindow: React.FC = () => {
-  const [person, setPerson] = useState<person | null>(null);
-  const [pending, setPending] = useState<boolean>(false);
-
   const { id, page } = useParams();
   const nav = useNavigate();
-  useEffect(() => {
-    if (id) {
-      setPending(true);
-      getPerson(`https://swapi.dev/api/people/${id}`).then((pers) => {
-        if (pers) {
-          setPerson(pers);
-          setPending(false);
-        }
-      });
-    } else {
-      setPerson(null);
-    }
-  }, [id]);
-
+  const dispatch = useAppDispatch();
+  const {
+    data: data,
+    isFetching,
+    isSuccess,
+    isError,
+    error,
+  } = useGetPersonQuery(!!id ? id : '');
   const handleClose = useCallback(() => nav(`/page/${page}`), [page, nav]);
-  if (!id || !person) {
+  useEffect(() => {
+    dispatch(setGetPersonPending(isFetching));
+  }, [isFetching, dispatch]);
+  let content;
+  if (isFetching) {
+    content = <Loader showLoader={isFetching} />;
+  } else if (isSuccess) {
+    content = <DetailedWindowContent person={data} handleClose={handleClose} />;
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
+
+  if (!id || !data) {
     return <></>;
   }
-  return (
-    <div className={styles.detailedWindow}>
-      <Loader showLoader={pending}>
-        <DetailedWindowContent person={person} handleClose={handleClose} />
-      </Loader>
-    </div>
-  );
+  return <div className={styles.detailedWindow}>{content}</div>;
 };
 
 export default DetailedWindow;

@@ -1,56 +1,67 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { getItems } from '../../API/getItems/getItems';
 import { CardContainer, Loader, Pagination } from '../../components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/reduxHooks';
-import { setPersonArr } from '../../store/searchReducer/searchSlice';
+import { useGetPeopleQuery } from '../../API/apiSlice';
+import {
+  setGetItemsPending,
+  setPersonArr,
+} from '../../store/searchReducer/searchSlice';
+// import { getItems } from '../../API/getItems/getItems';
 
 const Main: FC = () => {
   const nav = useNavigate();
   const { savedValue, limit } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
-  const [total, setTotal] = useState<number | null | undefined>(null);
   const { page, id } = useParams();
-
-  const [isPending, setIsPending] = useState<boolean>(false);
+  const {
+    data: data,
+    isFetching,
+    isSuccess,
+    isError,
+    error,
+  } = useGetPeopleQuery({ query: savedValue, limit, page: !!page ? +page : 1 });
   useEffect(() => {
-    if (page && total) {
-      if (+page > Math.ceil(total / limit) || +page < 0) {
-        nav('/not-found');
-      }
-      if ((id && +id > total) || (id && +id < 0)) {
-        nav('/not-found');
-      }
-    }
-  }, [total, limit, nav, page, id]);
-
-  useEffect(() => {
-    setIsPending(true);
     if (page) {
-      console.log(savedValue);
-
-      getItems(savedValue, +page, limit).then((data) => {
-        if (data.detail) {
-          nav('/not-found', { replace: true });
-        }
-
-        dispatch(setPersonArr(data.items));
-
-        setTotal(data.total);
-        setIsPending(false);
-      });
+      // getItems('123', 1, 10);
+      const ind =
+        limit === 10 ? [0] : (limit * +page) % 10 === 0 ? [5] : [0, 5];
+      if (data) {
+        dispatch(setPersonArr(data.items.slice(...ind)));
+      }
     }
-  }, [savedValue, page, nav, limit, dispatch]);
+  }, [dispatch, data, limit, page]);
+  useEffect(() => {
+    if (data && page && data.total) {
+      if (+page > Math.ceil(data.total / limit) || +page < 0) {
+        nav('/not-found');
+      }
+      if ((id && +id > data.total + 1) || (id && +id < 0)) {
+        nav('/not-found');
+      }
+    }
+  }, [data, limit, nav, page, id]);
+  useEffect(() => {
+    dispatch(setGetItemsPending(isFetching));
+  }, [isFetching, dispatch]);
   if (!page || !+page) {
     return <Navigate to={'/page/1'} />;
   }
 
-  return (
-    <Loader showLoader={isPending}>
-      <CardContainer />
-      <Pagination total={total} page={+page} />
-    </Loader>
-  );
+  let content;
+  if (isFetching) {
+    content = <Loader showLoader={isFetching} />;
+  } else if (isSuccess) {
+    content = (
+      <>
+        <CardContainer />
+        <Pagination total={data.total} page={+page} />
+      </>
+    );
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
+  return <>{content}</>;
 };
 
 export default Main;

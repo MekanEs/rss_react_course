@@ -1,0 +1,14 @@
+@import '../../styles/mixins.scss';
+
+.container {
+  font-size: 32px;
+  font-family: StJedi, sans-serif;
+}
+
+.clear {
+  display: block;
+  @include interactive-elem;
+  @include outline;
+  @include control-elem;
+  line-height: 0;
+}

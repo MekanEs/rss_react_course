@@ -6,6 +6,8 @@ interface ISearchSlice {
   savedValue: string;
   limit: number;
   personArr: personArr;
+  getItemsPending: boolean;
+  getPersonPending: boolean;
 }
 
 const initialState: ISearchSlice = {
@@ -13,6 +15,8 @@ const initialState: ISearchSlice = {
   savedValue: localStorage.getItem('search_value') || '',
   limit: Number(localStorage.getItem('limits')) || 10,
   personArr: [],
+  getItemsPending: false,
+  getPersonPending: false,
 };
 const SearchSlice = createSlice({
   name: 'Search',
@@ -32,9 +36,21 @@ const SearchSlice = createSlice({
     setPersonArr: (state, action: PayloadAction<personArr>) => {
       return { ...state, personArr: action.payload };
     },
+    setGetItemsPending: (state, action: PayloadAction<boolean>) => {
+      return { ...state, getItemsPending: action.payload };
+    },
+    setGetPersonPending: (state, action: PayloadAction<boolean>) => {
+      return { ...state, getPersonPending: action.payload };
+    },
   },
 });
 
-export const { setSearchValue, setSaveValue, saveLimit, setPersonArr } =
-  SearchSlice.actions;
+export const {
+  setSearchValue,
+  setSaveValue,
+  saveLimit,
+  setPersonArr,
+  setGetItemsPending,
+  setGetPersonPending,
+} = SearchSlice.actions;
 export default SearchSlice.reducer;

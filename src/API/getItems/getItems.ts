@@ -19,7 +19,7 @@ export interface person {
   starships?: string[];
   url: string;
   vehicles?: string[];
-  imageURL: string;
+  imageURL?: string;
 }
 export type responsetype = {
   total: number;

@@ -8,7 +8,7 @@ import { useAppSelector } from '../../store/hooks/reduxHooks';
 
 const CardContainer: React.FC = () => {
   const personArr = useAppSelector((state) => state.search.personArr);
-  const { page } = useParams();
+  const { page, id } = useParams();
   const nav = useNavigate();
 
   if (personArr.length === 0) {
@@ -28,7 +28,7 @@ const CardContainer: React.FC = () => {
           <Card key={person.name} person={person} />
         ))}
       </div>
-      <DetailedWindow />
+      {id && <DetailedWindow />}
     </div>
   );
 };
