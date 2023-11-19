@@ -1,0 +1,8 @@
+@import '../../styles/mixins.scss';
+
+.themeToggler {
+  @include outline;
+  @include interactive-elem;
+  @include control-elem;
+  @include accent-text;
+}

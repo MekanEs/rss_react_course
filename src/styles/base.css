@@ -1,0 +1,24 @@
+@font-face {
+  font-family: StJedi;
+  src: url('../assets/fonts/Starjedi.ttf');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button,
+input {
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+button:disabled {
+  background-color: grey;
+  border: 1px solid #000;
+}
