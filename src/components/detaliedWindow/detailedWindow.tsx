@@ -32,7 +32,7 @@ const DetailedWindow: React.FC = () => {
   }
 
   if (!id || !data) {
-    return <></>;
+    return <>Nothing Fetched</>;
   }
   return <div className={styles.detailedWindow}>{content}</div>;
 };

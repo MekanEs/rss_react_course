@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Card from './card';
 
@@ -27,20 +27,22 @@ const person = {
   created: '2014-12-10T15:11:50.376000Z',
   edited: '2014-12-20T21:17:50.311000Z',
   url: 'https://swapi.dev/api/people/3/',
-  imageURL: '',
+  imageURL: '#',
 };
 const mockUsedNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockUsedNavigate,
   useParams: () => mockUsedNavigate,
 }));
-vi.mock('../loader/loader', () => ({
-  default: () => <div>loader</div>,
-}));
+
 describe('Card Component', () => {
   it('image is rendered', () => {
     render(<Card person={person} />);
-    expect(screen.getByAltText('image of person')).toBeInTheDocument();
+    const image = screen.getByAltText('image of person');
+    expect(image).toBeInTheDocument();
+    const loader = screen.getByTestId('loader');
+    waitFor(() => expect(image.className).toBe(''));
+    waitFor(() => expect(loader).not.toBeInTheDocument());
   });
   it('renders the relevant card data', () => {
     render(<Card person={person} />);
@@ -50,7 +52,7 @@ describe('Card Component', () => {
   it('loader is rendered', () => {
     render(<Card person={person} />);
 
-    expect(screen.getByText('loader')).toBeInTheDocument();
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
   it('click on card handled', () => {
     render(<Card person={person} />);

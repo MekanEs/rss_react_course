@@ -12,10 +12,6 @@ const Card: React.FC<CardProps> = ({ person }) => {
   const { page } = useParams();
   const [pendingPhoto, setPendingPhoto] = useState<boolean>(true);
   const [imgClassName, setClassName] = useState<string>(styles.invisible);
-  const onLoad = () => {
-    setClassName('');
-    setPendingPhoto(false);
-  };
   const nav = useNavigate();
   const id = person.url.split('/');
   return (
@@ -28,12 +24,15 @@ const Card: React.FC<CardProps> = ({ person }) => {
     >
       <h2>{person.name}</h2>
       <div>
-        <Loader showLoader={pendingPhoto} />
+        {pendingPhoto && <Loader showLoader={pendingPhoto} />}
         <img
           className={imgClassName}
           src={person.imageURL}
           alt="image of person"
-          onLoad={onLoad}
+          onLoad={() => {
+            setClassName('');
+            setPendingPhoto(false);
+          }}
         />
       </div>
     </div>
