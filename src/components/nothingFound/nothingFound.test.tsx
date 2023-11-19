@@ -1,32 +1,35 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import NothingFound from './nothingFound';
-import { QueryContext } from '../../providers';
+import { renderWithProviders } from '../../tests/renderWithProviders';
+import { fireEvent } from '@testing-library/react';
 
+const initialState = {
+  search: {
+    searchValue: 'test',
+    savedValue: 'test',
+    limit: 1,
+    personArr: [],
+    getItemsPending: false,
+    getPersonPending: false,
+  },
+  api: undefined,
+};
 describe('NothingFound', () => {
   it('render component', () => {
-    render(<NothingFound />);
-    expect(screen.getByText('nothing is found')).toBeInTheDocument();
+    const { getByText } = renderWithProviders(<NothingFound />, {
+      preloadedState: { search: initialState.search },
+    });
+
+    expect(getByText('nothing is found')).toBeInTheDocument();
   });
-  it('handle event', () => {
-    const mockFunc = vi.fn();
-    render(
-      <QueryContext.Provider
-        value={{
-          setInputValue: mockFunc,
-          saveSearchValue: mockFunc,
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-          personArr: [],
-        }}
-      >
-        <NothingFound />
-      </QueryContext.Provider>
-    );
-    const clearButton = screen.getByText('clear');
-    fireEvent.click(clearButton);
-    expect(mockFunc).toBeCalledTimes(2);
+  it('state changes on click', () => {
+    const { getByText, store } = renderWithProviders(<NothingFound />, {
+      preloadedState: { search: initialState.search },
+    });
+    const button = getByText('clear');
+    fireEvent.click(button);
+    expect(store.getState().search.searchValue).toBe('');
+    expect(store.getState().search.savedValue).toBe('');
   });
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Search from './search';
-import { QueryContext, QueryProvider } from '../../providers';
+import { renderWithProviders } from '../../tests/renderWithProviders';
 
 const mockUsedNavigate = vi.fn();
 vi.mock('react-router-dom', () => ({
@@ -10,96 +10,51 @@ vi.mock('react-router-dom', () => ({
 }));
 
 describe('Search', () => {
+  const initialState = {
+    search: {
+      searchValue: 'test',
+      savedValue: 'test',
+      limit: 1,
+      personArr: [],
+      getItemsPending: false,
+      getPersonPending: false,
+    },
+    api: undefined,
+  };
   it('renders Component', () => {
-    render(
-      <QueryContext.Provider
-        value={{
-          searchValue: '',
-          limit: 10,
-          saveSearchValue: () => {},
-          inputValue: 'test',
-          personArr: [],
-        }}
-      >
-        <Search />
-      </QueryContext.Provider>
+    const { getByRole, getByText, getByDisplayValue } = renderWithProviders(
+      <Search />,
+      {
+        preloadedState: { search: initialState.search },
+      }
     );
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(getByRole('button')).toBeInTheDocument();
 
-    expect(screen.getByText('Search')).toBeInTheDocument();
+    expect(getByText('Search')).toBeInTheDocument();
 
-    expect(screen.getByDisplayValue('test')).toHaveAttribute('name', 'search');
+    expect(getByDisplayValue('test')).toHaveAttribute('name', 'search');
   });
-  it('handle events', () => {
-    const setInputValue = vi.fn();
-    const saveSearchValue = vi.fn();
-    render(
-      <QueryContext.Provider
-        value={{
-          searchValue: '11',
-          limit: 10,
-          saveSearchValue,
-          inputValue: 'test',
-          personArr: [],
-          setInputValue,
-        }}
-      >
-        <Search />
-      </QueryContext.Provider>
+
+  it('reducer called on input change', () => {
+    const { getByDisplayValue, store } = renderWithProviders(<Search />, {
+      preloadedState: { search: initialState.search },
+    });
+    const input = getByDisplayValue('test');
+    fireEvent.change(input, { target: { value: 'text' } });
+    expect(store.getState().search.searchValue).toBe('text');
+  });
+  it('reducer called on click', () => {
+    const { getByRole, getByDisplayValue, store } = renderWithProviders(
+      <Search />,
+      {
+        preloadedState: { search: initialState.search },
+      }
     );
-
-    const input = screen.getByDisplayValue('test');
-    fireEvent.change(input, { target: { value: '23' } });
-    expect(setInputValue).toBeCalled();
-
-    const button = screen.getByText('Search');
+    const input = getByDisplayValue('test');
+    const button = getByRole('button');
+    fireEvent.change(input, { target: { value: 'text' } });
     fireEvent.click(button);
-    expect(saveSearchValue).toBeCalled();
-  });
-  it("conditionally don't handle click", () => {
-    const setInputValue = vi.fn();
-    const saveSearchValue = vi.fn();
-    render(
-      <QueryContext.Provider
-        value={{
-          searchValue: 'test',
-          limit: 10,
-          saveSearchValue,
-          inputValue: 'test',
-          personArr: [],
-          setInputValue,
-        }}
-      >
-        <Search />
-      </QueryContext.Provider>
-    );
 
-    const button = screen.getByText('Search');
-    fireEvent.click(button);
-    expect(saveSearchValue).not.toBeCalled();
-  });
-  it('component retrieves the value from the local storage', () => {
-    localStorage.setItem('search_value', 'test');
-    render(
-      <QueryProvider>
-        <Search />
-      </QueryProvider>
-    );
-    const input = screen.getByDisplayValue('test');
-
-    expect(input).toBeInTheDocument();
-  });
-  it('Search button saves the entered value to the local storage', () => {
-    localStorage.setItem('search_value', 'test');
-    render(
-      <QueryProvider>
-        <Search />
-      </QueryProvider>
-    );
-    const input = screen.getByDisplayValue('test');
-    fireEvent.change(input, { target: { value: '23' } });
-    const button = screen.getByText('Search');
-    fireEvent.click(button);
-    expect(localStorage.getItem('search_value') === '23').toBeTruthy();
+    expect(store.getState().search.savedValue).toBe('text');
   });
 });

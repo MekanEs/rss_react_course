@@ -1,61 +1,70 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { Pagination } from '..';
-import { QueryContext } from '../../providers';
+import Pagination from './pagination';
 
+import { renderWithProviders } from '../../tests/renderWithProviders';
+
+const initialState = {
+  search: {
+    searchValue: 'test',
+    savedValue: 'test',
+    limit: 5,
+    personArr: [],
+    getItemsPending: false,
+    getPersonPending: false,
+  },
+  api: undefined,
+};
 const mockUsedNavigate = vi.fn();
+
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockUsedNavigate,
   useParams: () => ({ id: 1 }),
 }));
-
 describe('Pagination', () => {
   it('render component', () => {
-    render(<Pagination page={1} total={10} />);
-    expect(screen.getByText('<')).toBeInTheDocument();
-    expect(screen.getByText('<<')).toBeInTheDocument();
-    expect(screen.getByText('>')).toBeInTheDocument();
-    expect(screen.getByText('>>')).toBeInTheDocument();
-    expect(screen.getByText('limit:')).toBeInTheDocument();
+    const { getByText } = renderWithProviders(
+      <Pagination page={1} total={10} />,
+      {
+        preloadedState: { search: initialState.search },
+      }
+    );
+
+    expect(getByText('<')).toBeInTheDocument();
+    expect(getByText('<<')).toBeInTheDocument();
+    expect(getByText('>')).toBeInTheDocument();
+    expect(getByText('>>')).toBeInTheDocument();
+    expect(getByText('limit:')).toBeInTheDocument();
   });
   it('updates URL query parameter when page changes', () => {
-    render(
-      <QueryContext.Provider
-        value={{
-          saveLimit: vi.fn(),
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-          personArr: [],
-        }}
-      >
-        <Pagination page={1} total={10} />
-      </QueryContext.Provider>
+    const { getByText } = renderWithProviders(
+      <Pagination page={5} total={100} />,
+      {
+        preloadedState: { search: initialState.search },
+      }
     );
-    const nexPage = screen.getByText('>');
-    fireEvent.click(nexPage);
+    const nextPage = getByText('>');
+    const prevPage = getByText('<');
+    const lastPage = getByText('>>');
+    const firstPage = getByText('<<');
+    fireEvent.click(nextPage);
+    fireEvent.click(prevPage);
+    fireEvent.click(lastPage);
+    fireEvent.click(firstPage);
 
-    expect(mockUsedNavigate).toBeCalled();
+    expect(mockUsedNavigate).toBeCalledTimes(4);
   });
   it('handle events', () => {
-    const saveLimit = vi.fn();
-    render(
-      <QueryContext.Provider
-        value={{
-          saveLimit: saveLimit,
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-          personArr: [],
-        }}
-      >
-        <Pagination page={1} total={10} />
-      </QueryContext.Provider>
+    const { getByDisplayValue, store } = renderWithProviders(
+      <Pagination page={1} total={10} />,
+      {
+        preloadedState: { search: initialState.search },
+      }
     );
-    const input = screen.getByDisplayValue('1');
+    const input = getByDisplayValue('5');
     expect(input).toBeInTheDocument();
     fireEvent.change(input, { target: { value: '10' } });
-    expect(saveLimit).toBeCalled();
+    expect(store.getState().search.limit).toBe(10);
   });
 });

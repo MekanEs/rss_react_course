@@ -7,7 +7,6 @@ import {
   setGetItemsPending,
   setPersonArr,
 } from '../../store/searchReducer/searchSlice';
-// import { getItems } from '../../API/getItems/getItems';
 
 const Main: FC = () => {
   const nav = useNavigate();

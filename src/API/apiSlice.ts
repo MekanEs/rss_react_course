@@ -1,8 +1,33 @@
 // Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { imageBaseUrl, person } from './getItems/getItems';
+
 import { personArr } from '../providers/queryProvider/queryProvider';
 
+export const imageBaseUrl =
+  'https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/main/static/assets/img/people/';
+
+export interface person {
+  birth_year?: string;
+  eye_color?: string;
+  films?: string[];
+  gender: string;
+  hair_color: string;
+  height?: string;
+  homeworld?: string;
+  mass?: string;
+  name: string;
+  skin_color: string;
+  species?: never[];
+  starships?: string[];
+  url: string;
+  vehicles?: string[];
+  imageURL?: string;
+}
+export type responsetype = {
+  total: number;
+  items: person[];
+  detail?: string;
+};
 // Define our single API slice object
 export const apiSlice = createApi({
   // The cache reducer expects to be added at `state.api` (already default - this is optional)

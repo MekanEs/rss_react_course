@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './detailedWindow.module.scss';
-import { person } from '../../API/getItems/getItems';
 import Loader from '../loader/loader';
+import { person } from '../../API/apiSlice';
 interface DetailedWindowContentProps {
   person: person;
   handleClose: () => void;

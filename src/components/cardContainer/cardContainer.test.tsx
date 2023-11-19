@@ -1,11 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CardContainer from './cardContainer';
-import { QueryContext } from '../../providers';
 import { MemoryRouter } from 'react-router-dom';
 import DetailedWindow from '../detaliedWindow/detailedWindow';
-
+import { renderWithProviders } from '../../tests/renderWithProviders';
 const person = {
   name: 'R2-D2',
   height: '96',
@@ -32,48 +30,50 @@ const person = {
   url: 'https://swapi.dev/api/people/3/',
   imageURL: '',
 };
-const mockFunc = vi.fn();
 vi.mock('../detaliedWindow/detailedWindow', () => ({
   default: () => DetailedWindow,
 }));
 
 describe('CardContainer', () => {
+  const initialState = {
+    search: {
+      searchValue: '',
+      savedValue: '',
+      limit: 1,
+      personArr: [person, person],
+      getItemsPending: false,
+      getPersonPending: false,
+    },
+    api: undefined,
+  };
   it('renders the specified number of cards', () => {
-    render(
-      <QueryContext.Provider
-        value={{
-          personArr: [person, person],
-          setInputValue: mockFunc,
-          saveSearchValue: mockFunc,
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-        }}
-      >
-        <MemoryRouter initialEntries={['/page/1/']}>
-          <CardContainer />
-        </MemoryRouter>
-      </QueryContext.Provider>
+    const { getAllByText } = renderWithProviders(
+      <MemoryRouter initialEntries={['/page/1/']}>
+        <CardContainer />
+      </MemoryRouter>,
+      { preloadedState: { search: initialState.search } }
     );
-    expect(screen.getAllByText('R2-D2').length).toBe(2);
+
+    expect(getAllByText('R2-D2').length).toBe(2);
   });
   it('message is displayed if no cards are present', () => {
-    render(
-      <QueryContext.Provider
-        value={{
-          personArr: [],
-          setInputValue: mockFunc,
-          saveSearchValue: mockFunc,
-          limit: 1,
-          searchValue: '',
-          inputValue: '5',
-        }}
-      >
-        <MemoryRouter initialEntries={['/page/1/']}>
-          <CardContainer />
-        </MemoryRouter>
-      </QueryContext.Provider>
+    const { getByText } = renderWithProviders(
+      <MemoryRouter initialEntries={['/page/1/']}>
+        <CardContainer />
+      </MemoryRouter>,
+      {
+        preloadedState: {
+          search: {
+            searchValue: '',
+            savedValue: '',
+            limit: 1,
+            personArr: [],
+            getItemsPending: false,
+            getPersonPending: false,
+          },
+        },
+      }
     );
-    expect(screen.getByText('nothing is found')).toBeInTheDocument();
+    expect(getByText('nothing is found')).toBeInTheDocument();
   });
 });

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './card.module.scss';
-import { person } from '../../API/getItems/getItems';
 import Loader from '../loader/loader';
 import { useNavigate, useParams } from 'react-router-dom';
+import { person } from '../../API/apiSlice';
 
 interface CardProps {
   person: person;
