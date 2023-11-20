@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { personArr } from '../../providers/queryProvider/queryProvider';
+import { person } from '../../API/apiSlice';
 
 interface ISearchSlice {
   searchValue: string;
   savedValue: string;
   limit: number;
-  personArr: personArr;
+  personArr: person[];
   getItemsPending: boolean;
   getPersonPending: boolean;
 }
@@ -33,7 +33,7 @@ const SearchSlice = createSlice({
       localStorage.setItem('limits', `${action.payload}`);
       return { ...state, limit: action.payload };
     },
-    setPersonArr: (state, action: PayloadAction<personArr>) => {
+    setPersonArr: (state, action: PayloadAction<person[]>) => {
       return { ...state, personArr: action.payload };
     },
     setGetItemsPending: (state, action: PayloadAction<boolean>) => {

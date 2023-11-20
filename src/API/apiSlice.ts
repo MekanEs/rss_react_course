@@ -1,8 +1,6 @@
 // Import the RTK Query methods from the React-specific entry point
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { personArr } from '../providers/queryProvider/queryProvider';
-
 export const imageBaseUrl =
   'https://raw.githubusercontent.com/vieraboschkova/swapi-gallery/main/static/assets/img/people/';
 
@@ -54,9 +52,9 @@ export const apiSlice = createApi({
         count: number;
         next: string | null;
         previous: string | null;
-        results: personArr;
+        results: person[];
       }) => {
-        const resObj: { items: personArr; total: number } = {
+        const resObj: { items: person[]; total: number } = {
           items: [],
           total: 0,
         };
