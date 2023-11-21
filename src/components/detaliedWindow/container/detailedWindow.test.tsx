@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import React from 'react';
-import DetailedWindow from './detailedWindow';
+import DetailedWindow from './detailedWindowContainer';
 import { MemoryRouter } from 'react-router-dom';
-import { renderWithProviders } from '../../tests/renderWithProviders';
+import { renderWithProviders } from '../../../tests/renderWithProviders';
 
 describe('DetailedWindow', () => {
   const initialState = {
@@ -10,7 +10,7 @@ describe('DetailedWindow', () => {
       searchValue: 'test',
       savedValue: 'test',
       limit: 1,
-      personArr: [],
+      personArray: [],
       getItemsPending: false,
       getPersonPending: false,
     },

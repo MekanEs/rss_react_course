@@ -36,7 +36,7 @@ describe('main page', () => {
       searchValue: 'test',
       savedValue: 'test',
       limit: 1,
-      personArr: [person],
+      personArray: [person],
       getItemsPending: false,
       getPersonPending: false,
     },

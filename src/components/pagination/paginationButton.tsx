@@ -1,11 +1,6 @@
 import React from 'react';
 import styles from './pagination.module.scss';
-
-interface PaginationButtonProps {
-  text: string;
-  callback: () => void;
-  condition: boolean;
-}
+import { PaginationButtonProps } from './pagination.interface';
 
 const PaginationButton: React.FC<PaginationButtonProps> = ({
   text,

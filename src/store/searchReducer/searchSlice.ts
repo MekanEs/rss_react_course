@@ -1,20 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { person } from '../../API/apiSlice';
-
-interface ISearchSlice {
-  searchValue: string;
-  savedValue: string;
-  limit: number;
-  personArr: person[];
-  getItemsPending: boolean;
-  getPersonPending: boolean;
-}
+import { IPerson } from '../../API/apiTypes';
+import { ISearchSlice } from './types';
 
 const initialState: ISearchSlice = {
   searchValue: localStorage.getItem('search_value') || '',
   savedValue: localStorage.getItem('search_value') || '',
   limit: Number(localStorage.getItem('limits')) || 10,
-  personArr: [],
+  personArray: [],
   getItemsPending: false,
   getPersonPending: false,
 };
@@ -33,8 +25,8 @@ const SearchSlice = createSlice({
       localStorage.setItem('limits', `${action.payload}`);
       return { ...state, limit: action.payload };
     },
-    setPersonArr: (state, action: PayloadAction<person[]>) => {
-      return { ...state, personArr: action.payload };
+    setPersonArray: (state, action: PayloadAction<IPerson[]>) => {
+      return { ...state, personArray: action.payload };
     },
     setGetItemsPending: (state, action: PayloadAction<boolean>) => {
       return { ...state, getItemsPending: action.payload };
@@ -49,7 +41,7 @@ export const {
   setSearchValue,
   setSaveValue,
   saveLimit,
-  setPersonArr,
+  setPersonArray,
   setGetItemsPending,
   setGetPersonPending,
 } = SearchSlice.actions;

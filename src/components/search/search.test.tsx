@@ -15,7 +15,7 @@ describe('Search', () => {
       searchValue: 'test',
       savedValue: 'test',
       limit: 1,
-      personArr: [],
+      personArray: [],
       getItemsPending: false,
       getPersonPending: false,
     },

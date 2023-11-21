@@ -10,7 +10,7 @@ const initialState = {
     searchValue: 'test',
     savedValue: 'test',
     limit: 5,
-    personArr: [],
+    personArray: [],
     getItemsPending: false,
     getPersonPending: false,
   },

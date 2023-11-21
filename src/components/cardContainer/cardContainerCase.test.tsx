@@ -45,7 +45,7 @@ describe('CardContainer', () => {
           searchValue: '',
           savedValue: '',
           limit: 1,
-          personArr: [person],
+          personArray: [person],
           getItemsPending: false,
           getPersonPending: false,
         },

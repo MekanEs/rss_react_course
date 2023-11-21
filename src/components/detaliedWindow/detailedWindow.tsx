@@ -1,40 +1,39 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './detailedWindow.module.scss';
 import Loader from '../loader/loader';
-import { useNavigate, useParams } from 'react-router-dom';
-import DetailedWindowContent from './detailedWindowContent';
-import { useGetPersonQuery } from '../../API/apiSlice';
-import { setGetPersonPending } from '../../store/searchReducer/searchSlice';
-import { useAppDispatch } from '../../store/hooks/reduxHooks';
+import { DetailedWindowProps } from './detailedWindow.interface';
 
-const DetailedWindow: React.FC = () => {
-  const { id, page } = useParams();
-  const nav = useNavigate();
-  const dispatch = useAppDispatch();
-  const {
-    data: data,
-    isFetching,
-    isSuccess,
-    isError,
-    error,
-  } = useGetPersonQuery(!!id ? id : '');
-  const handleClose = useCallback(() => nav(`/page/${page}`), [page, nav]);
-  useEffect(() => {
-    dispatch(setGetPersonPending(isFetching));
-  }, [isFetching, dispatch]);
-  let content;
-  if (isFetching) {
-    content = <Loader showLoader={isFetching} />;
-  } else if (isSuccess) {
-    content = <DetailedWindowContent person={data} handleClose={handleClose} />;
-  } else if (isError) {
-    content = <div>{error.toString()}</div>;
-  }
+const DetailedWindow: React.FC<DetailedWindowProps> = ({
+  person,
+  handleClose,
+}) => {
+  const [pendingPhoto, setPendingPhoto] = useState<boolean>(true);
 
-  if (!id || !data) {
-    return <>Nothing Fetched</>;
-  }
-  return <div className={styles.detailedWindow}>{content}</div>;
+  const handleLoad = () => {
+    setPendingPhoto(false);
+  };
+
+  return (
+    <>
+      <button
+        className={styles.closeButton}
+        onClick={handleClose}
+        name="close button"
+      >
+        X
+      </button>
+      <h2>{person.name}</h2>
+      <div className={styles.description}>
+        <Loader showLoader={pendingPhoto} />
+        <img src={person.imageURL} alt="image of person" onLoad={handleLoad} />
+        <div>birth year: {person.birth_year}</div>
+        <div>hair color: {person.hair_color}</div>
+        <div>gender: {person.gender}</div>
+        <div>mass: {person.mass}</div>
+        <div>skin color: {person.skin_color}</div>
+      </div>
+    </>
+  );
 };
 
 export default DetailedWindow;

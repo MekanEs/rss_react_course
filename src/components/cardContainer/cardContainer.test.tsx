@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import CardContainer from './cardContainer';
 import { MemoryRouter } from 'react-router-dom';
-import DetailedWindow from '../detaliedWindow/detailedWindow';
+import DetailedWindow from '../detaliedWindow/container/detailedWindowContainer';
 import { renderWithProviders } from '../../tests/renderWithProviders';
 const person = {
   name: 'R2-D2',
@@ -40,7 +40,7 @@ describe('CardContainer', () => {
       searchValue: '',
       savedValue: '',
       limit: 1,
-      personArr: [person, person],
+      personArray: [person, person],
       getItemsPending: false,
       getPersonPending: false,
     },
@@ -67,7 +67,7 @@ describe('CardContainer', () => {
             searchValue: '',
             savedValue: '',
             limit: 1,
-            personArr: [],
+            personArray: [],
             getItemsPending: false,
             getPersonPending: false,
           },

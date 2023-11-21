@@ -5,19 +5,18 @@ import {
   setSearchValue,
 } from '../../store/searchReducer/searchSlice';
 import styles from './nothingFound.module.scss';
+
 const NothingFound: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  const handleClick = () => {
+    dispatch(setSearchValue(''));
+    dispatch(setSaveValue(''));
+  };
   return (
     <div className={styles.container}>
       nothing is found
-      <button
-        className={styles.clear}
-        onClick={() => {
-          dispatch(setSearchValue(''));
-          dispatch(setSaveValue(''));
-        }}
-      >
+      <button className={styles.clear} onClick={handleClick}>
         clear
       </button>
     </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import DetailedWindowContent from './detailedWindowContent';
+import DetailedWindowContent from './detailedWindow';
 
 const person = {
   name: 'R2-D2',
@@ -39,7 +39,7 @@ describe('DetaledWindowContent', () => {
   it('correctly displays the detailed card data', () => {
     const close = () => {};
     render(<DetailedWindowContent person={person} handleClose={close} />);
-    const img = screen.getByRole('img');
+    const img = screen.getByAltText('image of person');
 
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', '#');

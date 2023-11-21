@@ -6,11 +6,11 @@ import { ThemeContext } from '..';
 import { Theme } from './themeContext';
 const ThemeTest: React.FC = ({}) => {
   const { theme, setTheme } = useContext(ThemeContext);
-
+  const handleClick = () => setTheme && setTheme(Theme.LIGHT);
   return (
     <>
       <div>{theme}</div>
-      <button onClick={() => setTheme && setTheme(Theme.LIGHT)}>toggle</button>
+      <button onClick={handleClick}>toggle</button>
     </>
   );
 };

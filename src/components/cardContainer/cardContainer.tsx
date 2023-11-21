@@ -1,34 +1,36 @@
 import React from 'react';
 import styles from './cardContainer.module.scss';
 import Card from '../card/card';
-import DetailedWindow from '../detaliedWindow/detailedWindow';
 import { useNavigate, useParams } from 'react-router-dom';
 import NothingFound from '../nothingFound/nothingFound';
 import { useAppSelector } from '../../store/hooks/reduxHooks';
+import { SearchSelectors } from '../../store/searchReducer/selectors';
+import { pathGen } from '../../utils';
+import DetailedWindowContainer from '../detaliedWindow/container/detailedWindowContainer';
 
 const CardContainer: React.FC = () => {
-  const personArr = useAppSelector((state) => state.search.personArr);
+  const personArray = useAppSelector(SearchSelectors.personArray);
+
   const { page, id } = useParams();
+
   const nav = useNavigate();
 
-  if (personArr.length === 0) {
+  const handleClick = () => {
+    nav(pathGen(page));
+  };
+
+  if (personArray.length === 0) {
     return <NothingFound />;
   }
 
   return (
     <div className={styles.content}>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          nav(`/page/${page}`);
-        }}
-        className={styles.cardContainer}
-      >
-        {personArr.map((person) => (
+      <div onClick={handleClick} className={styles.cardContainer}>
+        {personArray.map((person) => (
           <Card key={person.name} person={person} />
         ))}
       </div>
-      {id && <DetailedWindow />}
+      {id && <DetailedWindowContainer />}
     </div>
   );
 };
